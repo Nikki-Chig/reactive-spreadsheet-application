@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.py[cod]
+*.pyo
+*.pyd
+
+env/
+venv/
+venv_reactive_spreadsheet/
+.pyest_cache/
+.pre-commit-config.yaml
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Node.js
+node_modules/
+
+# IDEs/Editors
+.vscode/
+.idea/
+
