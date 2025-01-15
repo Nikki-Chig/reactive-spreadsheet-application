@@ -26,3 +26,6 @@ node_modules/
 .vscode/
 .idea/
 
+#Config files
+*.zshrc
+*.bashrc
