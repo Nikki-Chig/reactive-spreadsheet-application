@@ -12,8 +12,6 @@ A real-time, distributed, collaborative spreadsheet application built with Pytho
   - [Frontend Setup](#frontend-setup)
   - [Docker Setup](#docker-setup)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
@@ -100,7 +98,7 @@ The project is containerized using Docker Compose.
 3. **Environment Variables:**
 The backend container uses the environment variable REDIS_HOST=redis (set in docker-compose.yml) to connect to the Redis container.
 
-### Usage
+## Usage
 - **Real-Time Editing:**
     - Open the frontend URL in multiple browser tabs. Edit a cell (double-click to edit) and observe real-time updates across all sessions.
 
