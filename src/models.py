@@ -1,14 +1,21 @@
 # reactive_spreadsheet/src/models.py
 
 from pydantic import BaseModel
-from typing import Optional, Dict
+from typing import Dict, Any
 
+class CellPayload(BaseModel):
+    row: int
+    col: int
+    value: str
 
 class CellUpdate(BaseModel):
-    type: str  # e.g., "update_cell"
-    payload: Dict[str, Optional[str]]  # e.g., {"row": 1, "col": 1, "value": "A1"}
-
+    type: str
+    payload: CellPayload
 
 class InitialData(BaseModel):
-    type: str  # e.g., "initial_data"
-    payload: Dict[str, str]  # e.g., {"1-1": "A1", "1-2": "B1", ...}
+    type: str
+    payload: Dict[str, str]  # Keys like "1-1", values as cell values
+
+# Optionally, if you want to differentiate the get_initial_data message
+class GetInitialData(BaseModel):
+    type: str  # Should be "get_initial_data"
