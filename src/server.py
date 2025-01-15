@@ -1,6 +1,7 @@
 # reactive_spreadsheet/src/server.py
 
 import logging
+import os
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
@@ -44,8 +45,10 @@ for row, col, value in existing_data:
     key = f"{row}-{col}"
     spreadsheet_data[key] = value
 
-# Configure Redis connection and stream key
-redis_client = redis.Redis(host="localhost", port=6379, db=0, decode_responses=True)
+# Configure Redis connection:
+# Read the Redis host from an environment variable; default to 'localhost'
+REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+redis_client = redis.Redis(host=REDIS_HOST, port=6379, db=0, decode_responses=True)
 REDIS_STREAM_KEY = "spreadsheet_updates"
 
 
