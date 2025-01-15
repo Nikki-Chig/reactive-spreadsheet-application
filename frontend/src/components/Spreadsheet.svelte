@@ -1,9 +1,9 @@
-<!-- frontend/src/components/Spreadsheet.svelte -->
 <script>
     import { onMount } from 'svelte';
     import Cell from './Cell.svelte';
     let rows = 10;
     let cols = 10;
+    // Make sure data is declared as a reactive variable
     let data = {};
   
     // Initialize data
@@ -17,6 +17,7 @@
     let ws;
   
     onMount(() => {
+      // Direct WebSocket connection
       ws = new WebSocket('ws://localhost:8888/ws');
   
       ws.onopen = () => {
@@ -29,8 +30,10 @@
         const message = JSON.parse(event.data);
         if (message.type === 'update_cell') {
           const { row, col, value } = message.payload;
-          data[`${row}-${col}`] = value;
+          // Reassign data to trigger reactivity
+          data = { ...data, [`${row}-${col}`]: value };
         } else if (message.type === 'initial_data') {
+          // Reassign the whole object for initial data load
           data = message.payload;
         }
       };
@@ -41,7 +44,8 @@
     });
   
     function handleCellUpdate(row, col, value) {
-      data[`${row}-${col}`] = value;
+      // Update data and reassign to trigger reactivity
+      data = { ...data, [`${row}-${col}`]: value };
       ws.send(JSON.stringify({
         type: 'update_cell',
         payload: { row, col, value },
@@ -49,6 +53,8 @@
     }
   </script>
   
+  
+
   <style>
     table {
       border-collapse: collapse;
