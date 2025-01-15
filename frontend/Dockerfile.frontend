@@ -1,32 +1,38 @@
 # Stage 1: Build the frontend using Node.js
 FROM node:20 as build
 
-# Set the working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json (or yarn.lock)
+# Copy only package files first to leverage caching for dependencies
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the frontend source code
+# Copy the rest of the application source code
 COPY . .
 
-# Build the production version of the Svelte app (make sure it outputs into "dist")
+# Build the production version of the Svelte app (outputs into "dist" by default)
 RUN npm run build
 
 # Stage 2: Serve the app with Nginx
 FROM nginx:alpine
 
-# Remove default Nginx static assets
+# Set environment variables for Nginx
+ENV PORT=80
+
+# Remove the default Nginx static assets
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy the built frontend from the build stage to Nginx's public folder
+# Copy the built frontend from the "build" stage to Nginx's public folder
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose port 80
+# Set correct permissions for the Nginx folder to avoid "403 Forbidden"
+RUN chmod -R 755 /usr/share/nginx/html
+
+# Expose port 80 (default Nginx port)
 EXPOSE 80
 
-# Start Nginx in the foreground
+# Start Nginx in the foreground to keep the container running
 CMD ["nginx", "-g", "daemon off;"]
