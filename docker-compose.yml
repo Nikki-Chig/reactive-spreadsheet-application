@@ -20,6 +20,8 @@ services:
       dockerfile: Dockerfile.frontend
     ports:
       - "5173:80"
+    environment:
+      - VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL}
     volumes:
       - ./frontend/dist:/usr/share/nginx/html
     restart: always  # Ensure frontend container restarts if it fails
