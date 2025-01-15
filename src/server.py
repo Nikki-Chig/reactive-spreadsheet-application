@@ -7,9 +7,33 @@ import tornado.httpserver
 import json
 from typing import Dict
 from models import CellUpdate, InitialData
+import duckdb
 
 # In-memory data store for simplicity
 spreadsheet_data: Dict[str, str] = {}
+
+# Database configuration
+DB_FILE = "spreadsheet.db"
+
+# Initialize DuckDB connection and create table if not exists
+conn = duckdb.connect(DB_FILE)
+conn.execute(
+    """
+    CREATE TABLE IF NOT EXISTS spreadsheet (
+        row INTEGER,
+        col INTEGER,
+        value VARCHAR,
+        PRIMARY KEY (row, col)
+    )
+"""
+)
+
+# Load existing data from DuckDB into spreadsheet_data
+existing_data = conn.execute("SELECT row, col, value FROM spreadsheet").fetchall()
+for row, col, value in existing_data:
+    key = f"{row}-{col}"
+    spreadsheet_data[key] = value
+
 
 class EchoWebSocket(tornado.websocket.WebSocketHandler):
     connections = set()
@@ -17,10 +41,9 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
     def open(self):
         print("WebSocket opened")
         self.connections.add(self)
-        # Send initial data
+        # Send initial data from in-memory store
         initial_message = InitialData(
-            type="initial_data",
-            payload=spreadsheet_data
+            type="initial_data", payload=spreadsheet_data
         ).dict()
         self.write_message(json.dumps(initial_message))
 
@@ -36,10 +59,19 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
                 key = f"{row}-{col}"
                 spreadsheet_data[key] = value
 
+                # Update the DuckDB database: insert or update on conflict
+                conn.execute(
+                    """
+                    INSERT INTO spreadsheet (row, col, value)
+                    VALUES (?, ?, ?)
+                    ON CONFLICT (row, col) DO UPDATE SET value = excluded.value
+                """,
+                    (row, col, value),
+                )
+
                 # Broadcast the update to all connected clients
                 update_message = CellUpdate(
-                    type="update_cell",
-                    payload={"row": row, "col": col, "value": value}
+                    type="update_cell", payload={"row": row, "col": col, "value": value}
                 ).dict()
                 self.broadcast(json.dumps(update_message))
         except Exception as e:
@@ -55,9 +87,11 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
 
 
 def make_app():
-    return tornado.web.Application([
-        (r"/ws", EchoWebSocket),  # Route: /ws for WebSocket connection
-    ])
+    return tornado.web.Application(
+        [
+            (r"/ws", EchoWebSocket),  # Route: /ws for WebSocket connection
+        ]
+    )
 
 
 if __name__ == "__main__":
