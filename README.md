@@ -21,7 +21,7 @@ Reactive Spreadsheet is designed to allow multiple users to collaborate on a sin
 - **DuckDB:** As an embedded SQL database for efficient data storage and querying.
 - **Redis Streams:** To manage and broadcast real-time cell updates among connected clients.
 - **Svelte:** For building a reactive and user-friendly frontend.
-- **AWS:** For depploying and managing the application infrastructure.
+- **AWS:** For deploying and managing the application infrastructure.
 
 ## Features
 
@@ -44,7 +44,7 @@ Below is a high-level architecture diagram of the application:
 
 1. **Clone the Repository:** <br>
     git clone https://github.com/Nikki-Chig/LiquidDuck.git <br>
-    cd reactive_spreadsheet <br>
+    cd LiquidDuck <br>
 
 2. **Set Up Python Virtual Environment:** <br>
     python -m venv venv_reactive_spreadsheet <br>
