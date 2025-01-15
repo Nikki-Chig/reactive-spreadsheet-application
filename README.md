@@ -21,12 +21,7 @@ Reactive Spreadsheet is designed to allow multiple users to collaborate on a sin
 - **DuckDB:** As an embedded SQL database for efficient data storage and querying.
 - **Redis Streams:** To manage and broadcast real-time cell updates among connected clients.
 - **Svelte:** For building a reactive and user-friendly frontend.
-
-This project is structured in phases:
-1. **Infrastructure Setup:** Establishing the core WebSocket backend.
-2. **UI & Data Modeling:** Developing a basic spreadsheet UI with Svelte and integrating backend data models via Pydantic.
-3. **Real-Time Collaboration:** Integrating Redis Streams for syncing updates.
-4. **Polishing & Final Testing:** Enhancing error handling, UI/UX, and containerization using Docker.
+- **AWS:** For depploying and managing the application infrastructure.
 
 ## Features
 
