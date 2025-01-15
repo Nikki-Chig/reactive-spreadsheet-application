@@ -16,7 +16,7 @@
   let ws;
 
   onMount(() => {
-    ws = new WebSocket('ws://localhost:8888/ws');
+    ws = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL || 'ws://localhost:8888/ws');
 
     ws.onopen = () => {
       connectionStatus = "Connected";
