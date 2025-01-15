@@ -173,8 +173,8 @@ if __name__ == "__main__":
     app = make_app()
     port = 8888
     server = tornado.httpserver.HTTPServer(app)
-    server.listen(port)
-    logger.info("Tornado WebSocket server is listening on ws://localhost:%s/ws", port)
+    server.listen(port, address="0.0.0.0")  # Bind to all interfaces
+    logger.info("Tornado WebSocket server is listening on ws://0.0.0.0:%s/ws", port)
 
     # Schedule a periodic callback every 1 second to check Redis Stream
     periodic_callback = tornado.ioloop.PeriodicCallback(process_redis_stream, 1000)
