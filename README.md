@@ -48,36 +48,36 @@ Below is a high-level architecture diagram of the application:
 ### Backend Setup without Docker
 
 1. **Clone the Repository:**
-    git clone https://github.com/Nikki-Chig/LiquidDuck.git
-    cd reactive_spreadsheet
+    - git clone https://github.com/Nikki-Chig/LiquidDuck.git
+    - cd reactive_spreadsheet
 
 2. **Set Up Python Virtual Environment:**
-    python -m venv venv_reactive_spreadsheet
-    source venv_reactive_spreadsheet/bin/activate   # On Windows: venv_reactive_spreadsheet\Scripts\activate
+    - python -m venv venv_reactive_spreadsheet
+    - source venv_reactive_spreadsheet/bin/activate   # On Windows: venv_reactive_spreadsheet\Scripts\activate
 
 3. **Install Dependencies:**
-    pip install -r requirements.txt
+    - pip install -r requirements.txt
 
 4. **Configuration:**
-    Ensure that you have installed Redis and Redis server is accessible at the correct host. When running locally, the application defaults to connecting to Redis at localhost:6379.
+    - Ensure that you have installed Redis and Redis server is accessible at the correct host. When running locally, the application defaults to connecting to Redis at localhost:6379.
 
 5. **Run the backend:**
-    To run the backend:
-    python src/server.py
+    - To run the backend:
+        - python src/server.py
 
 ### Front Setup without Docker
 1. **Navigate to the Frontend Directory:**
-    cd frontend
+    - cd frontend
 
 2. **Install Node Dependencies:**
-    npm install
+    - npm install
 
 3. **Run the Development Server:**
-    npm run dev
+    - npm run dev
 
 4. **Run the Development Server:**
-    npm run dev
-    The frontend will run at http://localhost:5173.
+    - npm run dev
+    - The frontend will run at http://localhost:5173.
 
 ### Entire Project Setup with Docker
 The project is containerized using Docker Compose.
@@ -87,13 +87,13 @@ The project is containerized using Docker Compose.
 
 2. **Build and Run Containers:**
     From the project root (reactive_spreadsheet), run:
-        docker compose build
-        docker compose up
+        - docker compose build
+        - docker compose up
 
     This starts:
-    Backend Container: Accessible at http://localhost:8888.
-    Frontend Container: Available at http://localhost:5173.
-    Redis Container: Running on port 6379.
+    - Backend Container: Accessible at http://localhost:8888.
+    - Frontend Container: Available at http://localhost:5173.
+    - Redis Container: Running on port 6379.
 
 3. **Environment Variables:**
 The backend container uses the environment variable REDIS_HOST=redis (set in docker-compose.yml) to connect to the Redis container.
