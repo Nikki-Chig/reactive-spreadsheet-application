@@ -47,62 +47,62 @@ Below is a high-level architecture diagram of the application:
 
 ### Backend Setup without Docker
 
-1. **Clone the Repository:**
-    git clone https://github.com/Nikki-Chig/LiquidDuck.git
-    cd reactive_spreadsheet
+1. **Clone the Repository:** <br>
+    git clone https://github.com/Nikki-Chig/LiquidDuck.git <br>
+    cd reactive_spreadsheet <br>
 
-2. **Set Up Python Virtual Environment:**
-    python -m venv venv_reactive_spreadsheet
-    source venv_reactive_spreadsheet/bin/activate   # On Windows: venv_reactive_spreadsheet\Scripts\activate
+2. **Set Up Python Virtual Environment:** <br>
+    python -m venv venv_reactive_spreadsheet <br>
+    source venv_reactive_spreadsheet/bin/activate   # On Windows: venv_reactive_spreadsheet\Scripts\activate <br>
 
-3. **Install Dependencies:**
-    pip install -r requirements.txt
+3. **Install Dependencies:** <br>
+    pip install -r requirements.txt <br>
 
-4. **Configuration:**
-    Ensure that you have installed Redis and Redis server is accessible at the correct host. When running locally, the application defaults to connecting to Redis at localhost:6379.
+4. **Configuration:** <br>
+    Ensure that you have installed Redis and Redis server is accessible at the correct host. When running locally, the application defaults to connecting to Redis at localhost:6379.<br>
 
-5. **Run the backend:**
-    To run the backend:
-    python src/server.py
+5. **Run the backend:** <br>
+    To run the backend: <br>
+    python src/server.py <br>
 
 ### Front Setup without Docker
-1. **Navigate to the Frontend Directory:**
-    cd frontend
+1. **Navigate to the Frontend Directory:** <br>
+    cd frontend <br>
 
-2. **Install Node Dependencies:**
-    npm install
+2. **Install Node Dependencies:** <br>
+    npm install <br>
 
-3. **Run the Development Server:**
-    npm run dev
+3. **Run the Development Server:** <br>
+    npm run dev <br>
 
-4. **Run the Development Server:**
-    npm run dev
-    The frontend will run at http://localhost:5173.
+4. **Run the Development Server:** <br>
+    npm run dev <br>
+    The frontend will run at http://localhost:5173. <br>
 
 ### Entire Project Setup with Docker
-The project is containerized using Docker Compose.
+The project is containerized using Docker Compose. <br>
 
-1. **Ensure Docker is Installed:**
-    Download and install Docker Desktop.
+1. **Ensure Docker is Installed:** <br>
+    Download and install Docker Desktop. <br>
 
-2. **Build and Run Containers:**
-    From the project root (reactive_spreadsheet), run:
-        docker compose build
-        docker compose up
+2. **Build and Run Containers:** <br>
+    From the project root (reactive_spreadsheet), run: <br>
+        docker compose build <br>
+        docker compose up <br>
 
-    This starts:
-    Backend Container: Accessible at http://localhost:8888.
-    Frontend Container: Available at http://localhost:5173.
-    Redis Container: Running on port 6379.
+    This starts:<br>
+    Backend Container: Accessible at http://localhost:8888. <br>
+    Frontend Container: Available at http://localhost:5173. <br>
+    Redis Container: Running on port 6379. <br>
 
-3. **Environment Variables:**
+3. **Environment Variables:** <br>
 The backend container uses the environment variable REDIS_HOST=redis (set in docker-compose.yml) to connect to the Redis container.
 
 ## Usage
-- **Real-Time Editing:**
+- **Real-Time Editing:** <br>
     - Open the frontend URL in multiple browser tabs. Edit a cell (double-click to edit) and observe real-time updates across all sessions.
 
-- **Monitoring:**
+- **Monitoring:** <br>
     - Check the backend logs for important events such as connection status, error messages, and update broadcasts.This can be useful for debugging and performance monitoring.
 
 
