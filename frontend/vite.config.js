@@ -3,6 +3,9 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 
 export default defineConfig({
   plugins: [svelte()],
+  build: {
+    outDir: 'dist',
+  },
   server: {
     proxy: {
       '/api': 'http://localhost:8888', // Proxy API requests to Tornado server
