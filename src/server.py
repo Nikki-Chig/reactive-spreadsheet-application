@@ -85,7 +85,7 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
                 # Validate the update using CellUpdate
                 cell_update = CellUpdate.parse_obj(
                     data
-                )  # Optionally use model_validate() for Pydantic V2+
+                )
                 row = cell_update.payload.row
                 col = cell_update.payload.col
                 value = cell_update.payload.value
@@ -138,9 +138,10 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
 def process_redis_stream():
     """
     Process new messages from the Redis stream and broadcast them to all clients.
-    A simple implementation that reads new messages and broadcasts them.
+    A simple implementation that reads new messages and deletes them after processing.
     """
-    last_id = "0-0"  # For a robust implementation, track this persistently.
+    last_id = redis_client.get("last_processed_id") or "0-0"
+
     try:
         response = redis_client.xread({REDIS_STREAM_KEY: last_id}, count=10, block=1000)
         if response:
@@ -156,7 +157,9 @@ def process_redis_stream():
                     }
                     logger.info("Broadcasting from Redis stream: %s", broadcast_message)
                     EchoWebSocket.broadcast_global(json.dumps(broadcast_message))
-                    last_id = message_id  # Note: This simplistic approach does not persist last_id.
+                    last_id = message_id
+                    redis_client.set("last_processed_id", last_id)
+                    redis_client.xdel(REDIS_STREAM_KEY, message_id)
     except Exception as e:
         logger.error(f"Error reading from Redis Stream: {e}", exc_info=True)
 

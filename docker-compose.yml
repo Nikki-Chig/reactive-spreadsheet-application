@@ -12,6 +12,7 @@ services:
       - REDIS_HOST=redis  # Reference to the Redis service name (internal Docker network)
     volumes:
       - ./src:/app/src
+      - ./spreadsheet.db:/app/spreadsheet.db  # Bind mount the database file
     restart: always  # Restart container on crash
 
   frontend:
