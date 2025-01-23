@@ -59,6 +59,7 @@ sequenceDiagram
     DuckDB Manager(Flask)->>Redis: Push update to `redis_to_websocket_stream`
     Redis-->>Backend(Tornado): Notify with updated cell
     Backend(Tornado)-->>Client(Frontend-Svelte): Broadcast update to all connected clients
+```
 
 ## Setup and Installation
 
