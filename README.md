@@ -38,10 +38,7 @@ Current system design of the application (soon to be deprecated):
 
 ![Architecture Diagram](./system_design.jpeg)
 
-New System Design (soon to be implemented)
-
-Mermaid Sequence Diagram
-
+New System Design (soon to be implemented):
 ```mermaid
 sequenceDiagram
     autonumber
