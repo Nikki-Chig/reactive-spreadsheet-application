@@ -43,7 +43,7 @@ New System Design (soon to be implemented):
 sequenceDiagram
     autonumber
     Client(Frontend-Svelte)->>Backend(Tornado): Connect to websocket and request spreadsheet data
-    Backend(Tornado)->>DuckDB Manager(Flask): Forward request
+    Backend(Tornado)->>DuckDB Manager(Flask): Forward request (read_only)
     DuckDB Manager(Flask)->>DuckDB: Fetch spreadsheet data
     DuckDB-->>DuckDB Manager(Flask): Return spreadsheet data
     DuckDB Manager(Flask)-->>Backend(Tornado): Forward Spreadsheet data 
