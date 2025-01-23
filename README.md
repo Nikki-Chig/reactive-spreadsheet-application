@@ -34,9 +34,31 @@ Reactive Spreadsheet is designed to allow multiple users to collaborate on a sin
 
 ## Architecture
 
-Below is a high-level architecture diagram of the application:
+Current system design of the application (soon to be deprecated):
 
 ![Architecture Diagram](./system_design.jpeg)
+
+New System Design (soon to be implemented)
+
+Mermaid Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    autonumber
+    Client(Frontend-Svelte)->>Backend(Tornado): Connect to websocket and request spreadsheet data
+    Backend(Tornado)->>DuckDB Manager(Flask): Forward request
+    DuckDB Manager(Flask)->>DuckDB: Fetch spreadsheet data
+    DuckDB-->>DuckDB Manager(Flask): Return spreadsheet data
+    DuckDB Manager(Flask)-->>Backend(Tornado): Forward Spreadsheet data 
+    Backend(Tornado)-->>Client(Frontend-Svelte): Return spreadsheet data
+
+    Client(Frontend-Svelte)->>Backend(Tornado): Update cell data
+    Backend(Tornado)->>Redis: Push update to `redis_to_duckdb_stream`
+    Redis-->>DuckDB Manager(Flask): Listen and pull updated data
+    DuckDB Manager(Flask)->>DuckDB: Write update to database
+    DuckDB Manager(Flask)->>Redis: Push update to `redis_to_websocket_stream`
+    Redis-->>Backend(Tornado): Notify with updated cell
+    Backend(Tornado)-->>Client(Frontend-Svelte): Broadcast update to all connected clients
 
 ## Setup and Installation
 
