@@ -21,9 +21,9 @@ jobs:
       - name: Deploy to EC2
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
-          SERVER_URL: ${{ secrets.SERVER_URL }}  # Passing the SERVER_URL from secrets
+          VITE_WEBSOCKET_URL: ${{ secrets.VITE_WEBSOCKET_URL }}  # Passing the SERVER_URL from secrets
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@$EC2_HOST <<EOF
+          ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST <<EOF
             # Navigate to the project directory
             cd /home/ec2-user/LiquidDuck
             
@@ -37,7 +37,7 @@ jobs:
             sudo docker-compose pull
             
             # Rebuild the containers with the latest code and no cache
-            SERVER_URL=${SERVER_URL} sudo docker-compose build --no-cache
+            VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} sudo docker-compose build --no-cache
             
             # Start the updated containers
             sudo docker-compose up -d --build
