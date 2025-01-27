@@ -7,17 +7,17 @@ WORKDIR /app
 # Copy only package files first to leverage caching for dependencies
 COPY package*.json ./
 
+# Set environment variables for the Svelte app
+ENV VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL}
+
 # Install dependencies
-RUN npm install
+RUN VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} npm install
 
 # Copy the rest of the application source code
 COPY . .
 
-# Set environment variables for the Svelte app
-ENV VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL}
-
 # Build the production version of the Svelte app (outputs into "dist" by default)
-RUN npm run build
+RUN VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} npm run build
 
 # Stage 2: Serve the app with Nginx
 FROM nginx:alpine
