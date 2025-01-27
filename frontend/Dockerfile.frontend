@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of the application source code
 COPY . .
 
+# Set environment variables for the Svelte app
+ENV VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL}
+
 # Build the production version of the Svelte app (outputs into "dist" by default)
 RUN npm run build
 
