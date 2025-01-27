@@ -26,7 +26,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST <<EOF
             # Navigate to the project directory
-            cd /home/ec2-user/LiquidDuck
+            cd /home/ubuntu/LiquidDuck
             
             # Pull the latest code from the Git repository
             git pull origin develop
