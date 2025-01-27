@@ -7,17 +7,17 @@ WORKDIR /app
 # Copy only package files first to leverage caching for dependencies
 COPY package*.json ./
 
-# Set environment variables for the Svelte app
-ENV VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL}
+# Copy the .env file into the container
+COPY .env ./
 
 # Install dependencies
-RUN VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} npm install
+RUN npm install
 
 # Copy the rest of the application source code
 COPY . .
 
-# Build the production version of the Svelte app (outputs into "dist" by default)
-RUN VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} npm run build
+# Build the production version of the Svelte app
+RUN npm run build
 
 # Stage 2: Serve the app with Nginx
 FROM nginx:alpine
@@ -31,11 +31,11 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy the built frontend from the "build" stage to Nginx's public folder
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Set correct permissions for the Nginx folder to avoid "403 Forbidden"
+# Set correct permissions for the Nginx folder
 RUN chmod -R 755 /usr/share/nginx/html
 
-# Expose port 80 (default Nginx port)
+# Expose port 80
 EXPOSE 80
 
-# Start Nginx in the foreground to keep the container running
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
