@@ -22,33 +22,32 @@ jobs:
       - name: Deploy to EC2
         env:
           EC2_HOST: ${{ secrets.EC2_HOST }}
-          VITE_WEBSOCKET_URL: ${{ secrets.VITE_WEBSOCKET_URL }}  # Passing the SERVER_URL from secrets
+          VITE_WEBSOCKET_URL: ${{ secrets.VITE_WEBSOCKET_URL }}
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST <<EOF
             # Navigate to the project directory
             cd /home/ubuntu/LiquidDuck
             
-            # Pull the latest code from the Git repository
+            # Create .env file with the environment variable
+            echo "VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL}" > .env
+            
+            # Pull the latest code
             git pull origin develop
             
-            # Bring down any running containers
+            # Stop running containers
             sudo docker-compose down
             
-            # Pull the latest Docker images
-            sudo docker-compose pull
-            
-            # Rebuilding the Frontend
+            # Build frontend with environment variable
             cd frontend
-            VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} sudo npm install
-            VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} sudo npm run build
+            echo "VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL}" > .env
+            sudo npm install
+            sudo npm run build
             cd ..
-
-            # Rebuild the containers with the latest code and no cache
-            VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} sudo docker-compose build --no-cache
             
-            # Start the updated containers
-            VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} sudo docker-compose up -d --build
+            # Rebuild and start containers
+            sudo docker-compose build --no-cache
+            sudo docker-compose up -d
             
-            # Clean up unused Docker resources
+            # Cleanup
             sudo docker system prune -af
           EOF
