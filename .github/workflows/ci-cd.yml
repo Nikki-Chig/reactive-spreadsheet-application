@@ -39,8 +39,8 @@ jobs:
             
             # Rebuilding the Frontend
             cd frontend
-            sudo npm install
-            sudo npm run build
+            VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} sudo npm install
+            VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} sudo npm run build
             cd ..
 
             # Rebuild the containers with the latest code and no cache
