@@ -11,6 +11,10 @@ jobs:
     environment: staging
 
     steps:
+      - name: Debug environment variables
+        run: |
+          echo "VITE_WEBSOCKET_URL=${{ secrets.VITE_WEBSOCKET_URL }}"
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -47,7 +51,7 @@ jobs:
             VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} sudo docker-compose build --no-cache
             
             # Start the updated containers
-            sudo docker-compose up -d --build
+            VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} sudo docker-compose up -d --build
             
             # Clean up unused Docker resources
             sudo docker system prune -af
