@@ -4,7 +4,7 @@
 </script>
 
 <main>
-  <h1>Collaborative Reactive Spreadsheet</h1>
+  <h1>Collaborative Spreadsheet</h1>
   <Spreadsheet />
 </main>
 
