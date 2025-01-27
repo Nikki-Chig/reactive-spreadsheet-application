@@ -37,6 +37,12 @@ jobs:
             # Pull the latest Docker images
             sudo docker-compose pull
             
+            # Rebuilding the Frontend
+            cd frontend
+            sudo npm install
+            sudo npm run build
+            cd ..
+
             # Rebuild the containers with the latest code and no cache
             VITE_WEBSOCKET_URL=${VITE_WEBSOCKET_URL} sudo docker-compose build --no-cache
             
