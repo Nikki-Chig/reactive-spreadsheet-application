@@ -1,0 +1,47 @@
+name: CI/CD for Reactive Spreadsheet
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Deploy to EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          SERVER_URL: ${{ secrets.SERVER_URL }}  # Passing the SERVER_URL from secrets
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@$EC2_HOST <<EOF
+            # Navigate to the project directory
+            cd /home/ec2-user/svelte-socket-duckdb
+            
+            # Pull the latest code from the Git repository
+            git pull origin main
+            
+            # Bring down any running containers
+            sudo docker-compose down
+            
+            # Pull the latest Docker images
+            sudo docker-compose pull
+            
+            # Rebuild the containers with the latest code and no cache
+            SERVER_URL=${SERVER_URL} sudo docker-compose build --no-cache
+            
+            # Start the updated containers
+            sudo docker-compose up -d --build
+            
+            # Clean up unused Docker resources
+            sudo docker system prune -af
+          EOF
